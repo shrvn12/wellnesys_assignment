@@ -29,7 +29,7 @@ class Log {
 
 // function to implement logging
 function Logger(log) {
-  const logs = require("./logs.json");
+  const logs = JSON.parse(fs.readFileSync("./logs.json","utf-8"));
   logs.push(log)
   fs.writeFileSync("./logs.json", JSON.stringify(logs, null, 2));
 }
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
   // Retrieving the user information from the JSON file.
-  const users = require("./users.json");
+  const users = JSON.parse(fs.readFileSync("./users.json","utf-8"));
 
   Logger(new Log("User data requested", req.ip, `${Buffer.byteLength(users.toString()) / 1024} KB`));
 
@@ -62,7 +62,7 @@ app.post("/users", (req, res) => {
     }
   }
 
-  const users = require("./users.json");
+  const users = JSON.parse(fs.readFileSync("./users.json","utf-8"));
   users.push(payload);
   fs.writeFileSync("./users.json", JSON.stringify(users, null, 2));
 
