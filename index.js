@@ -118,7 +118,6 @@ app.listen(3000, () => {
     let systemData = {
         hostName: os.hostname(),
         cpu: os.cpus(),
-        machine: os.machine(),
         platform: os.platform()
     }
 
