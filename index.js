@@ -6,8 +6,8 @@ const app = express();
 app.use(express.json()); // This middleware will handle JSON requests.
 
 // creating required files (if not present)
-!fs.existsSync("./tmp/logs.json") && fs.writeFileSync("./tmp/logs.json", "[]");
-!fs.existsSync("./tmp/users.json") && fs.writeFileSync("./tmp/users.json", "[]");
+!fs.existsSync(__dirname+"/tmp/logs.json") && fs.writeFileSync(__dirname+"/tmp/logs.json", "[]");
+!fs.existsSync(__dirname+"/tmp/users.json") && fs.writeFileSync(__dirname+"/tmp/users.json", "[]");
 
 // class for creating log information
 class Log {
@@ -29,9 +29,9 @@ class Log {
 
 // function to implement logging
 function Logger(log) {
-  const logs = JSON.parse(fs.readFileSync("./tmp/logs.json","utf-8"));
+  const logs = JSON.parse(fs.readFileSync(__dirname+"/tmp/logs.json","utf-8"));
   logs.push(log)
-  fs.writeFileSync("./tmp/logs.json", JSON.stringify(logs, null, 2));
+  fs.writeFileSync(__dirname+"/tmp/logs.json", JSON.stringify(logs, null, 2));
 }
 
 // Implementing routes.
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
   // Retrieving the user information from the JSON file.
-  const users = JSON.parse(fs.readFileSync("./tmp/users.json","utf-8"));
+  const users = JSON.parse(fs.readFileSync(__dirname+"/tmp/users.json","utf-8"));
 
   Logger(new Log("User data requested", req.ip, `${Buffer.byteLength(users.toString()) / 1024} KB`));
 
@@ -62,9 +62,9 @@ app.post("/users", (req, res) => {
     }
   }
 
-  const users = JSON.parse(fs.readFileSync("./tmp/users.json","utf-8"));
+  const users = JSON.parse(fs.readFileSync(__dirname+"/tmp/users.json","utf-8"));
   users.push(payload);
-  fs.writeFileSync("./tmp/users.json", JSON.stringify(users, null, 2));
+  fs.writeFileSync(__dirname+"/tmp/users.json", JSON.stringify(users, null, 2));
 
   Logger(new Log("new user added", req.ip, "User created successfully!", payload));
 
@@ -75,7 +75,7 @@ app.post("/users", (req, res) => {
 app.get("/logs", (req, res) => {
 
     // Creating a readStream for logs
-    const Serverlogs = fs.createReadStream("./tmp/logs.json", "utf-8");
+    const Serverlogs = fs.createReadStream(__dirname+"/tmp/logs.json", "utf-8");
     let log = null;
 
     // Sending logs data
