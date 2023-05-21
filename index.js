@@ -6,8 +6,8 @@ const app = express();
 app.use(express.json()); // This middleware will handle JSON requests.
 
 // creating required files (if not present)
-!fs.existsSync("tmp/logs.json") && fs.writeFileSync("tmp/logs.json", "[]");
-!fs.existsSync("tmp/users.json") && fs.writeFileSync("tmp/users.json", "[]");
+!fs.existsSync("./tmp/logs.json") && fs.writeFileSync("./tmp/logs.json", "[]");
+!fs.existsSync("./tmp/users.json") && fs.writeFileSync("./tmp/users.json", "[]");
 
 // class for creating log information
 class Log {
